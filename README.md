@@ -28,11 +28,14 @@ mas ainda assim precisaremos de um certo cuidado com a proteção de nossos dado
 
 Agora, imagine que você tem um local central de configurações disponível na rede,
 e que é garantido um tráfego seguro dos dados entre as máquinas, e que você pode
-criar a qualquer momento um container para sua nova aplicação, e depois que ela esteja
-pronta, você pede simplesmente a um gestor do ambiente de produção que configure-a
-de acordo com as necessidades de produção, e sem se preocupar em te passar nenhum
-dado sensível. **É isso que pretendemos fazer**, e isso resolveria muitos problemas
-de configuração de aplicativos desde seu desenvolvimento até implantação em produção.
+criar a qualquer momento um local para guardar as configurações de sua nova aplicação,
+e depois que ela (sua aplicação) esteja pronta, você pede simplesmente a um gestor do
+ambiente de produção que configure-a de acordo com as necessidades de produção, e que ele
+não precisa se preocupar em te passar nenhum dado sensível.
+
+**É isso que pretendemos fazer!** Talvez isso resolva muitos problemas de configuração
+de aplicativos desde seu desenvolvimento até implantação em produção. E a única coisa
+que sua aplicação precisará saber é onde está o servidor de configurações.
 
 ## Como funciona?
 

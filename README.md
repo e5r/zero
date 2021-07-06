@@ -47,16 +47,15 @@ Temos 3 componentes envolvidos:
 
 ### 1. Servidor de configurações
 
-Um servidor [gRPC](https://grpc.io) pronto a atender basicamente 8 requisições:
+Um servidor [gRPC](https://grpc.io) pronto a atender basicamente 7 requisições:
 
-1. Criar novo par de chave assimétrica de acesso
+1. Registrar novas chaves de acesso
 2. Listar chaves de acesso
-3. Transferir chaves de acesso
-4. Revogar uma chave de acesso
-5. Criar um novo container de configuração
-6. Listar os container's de configuração
-7. Transferir valores de configurações em um container de configuração
-8. Definir valores de configurações em um container de configuração
+3. Revogar chaves de acesso
+4. Criar um novo container de configurações
+5. Listar os container's de configurações
+6. Transferir valores de configurações
+7. Definir valores de configurações
 
 ### 2. Utilitário de configurações
 

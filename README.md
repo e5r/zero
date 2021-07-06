@@ -62,11 +62,10 @@ Um servidor [gRPC](https://grpc.io) pronto a atender basicamente 7 requisições
 Um utilitário de linha de comando que permite requisitar as funções do servidor
 de configurações.
 
-* Em toda requisição uma chave deve ser informada
+* Em toda requisição a impressão digital da chave deve ser informada
 * Todo dado antes de ser enviado ao servidor é criptografado com a chave
   privada informada. E toda resposta do servidor é também criptografada com a
-  chave pública informada. Assim é garantida a criptografia de ponta a ponta.
-* Durante toda requisição a impressão digital da chave é transportada
+  chave pública informada. Assim é garantida a criptografia de ponta a ponta
 
 ### 3. Biblioteca de acesso a configurações
 

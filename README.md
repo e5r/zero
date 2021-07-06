@@ -34,7 +34,7 @@ de acordo com as necessidades de produção, e sem se preocupar em te passar nen
 dado sensível. **É isso que pretendemos fazer**, e isso resolveria muitos problemas
 de configuração de aplicativos desde seu desenvolvimento até implantação em produção.
 
-## Como funciona
+## Como funciona?
 
 Temos 3 componentes envolvidos:
 
@@ -72,6 +72,79 @@ Uma biblioteca em qualquer linguagem suportada, que dada uma chave de acesso
 é capaz de obter somente, qualquer configuração de um container de configuração
 pré-definido.
 
+## Sobre as configurações
+
+1. O que é um container de configuração?
+
+É um identificador único no servidor que atenda aos critérios abaixo:
+* Não contenha espaços
+* Não contenha caracteres especiais além de `/.-_+`
+* Contenha pelo menos 3 caracteres alfanuméricos
+* Inicie com um caractere alfabético ou `_` (sublinhado)
+
+2. O que é uma entrada de configuração?
+
+É um identificador dentro de um container de configuração com um nome
+que atenda aos critérios abaixo:
+* Não contenha espaços
+* Somente caracteres alphanuméricos
+* Inicie com um caractere alfabético ou `_` (sublinhado)
+
+3. O que é um valor de entrada de configuração?
+
+Cada entrada de configuração pode ter um dos seguintes valores:
+
+* `nil` - Nenhum valor informado
+* `byte` - Valor de 1 byte (8-bits)
+* `int32` - Valor de 4 bytes (32-bit signed integer, two's complement)
+* `int64`	- Valor de 8 bytes (64-bit signed integer, two's complement)
+* `uint64` - Valor de 8 bytes (64-bit unsigned integer)
+* `double` - Valor de 8 bytes (64-bit IEEE 754-2008 binary floating point)
+* `decimal128` - Valor de 16 bytes (128-bit IEEE 754-2008 decimal floating point)
+
+> Dados baseados na especificação [BSON](https://bsonspec.org/spec.html)
+
+Também tem uma lista de entradas filhas.
+
+4. O que é um namespace de entrada de configuração?
+
+Quando o cliente solicita um valor de configuração, ele na verdade informa
+um namespace que contém a localização de uma entrada qualificada, e a isso
+damos o nome de namespace.
+
+Imagine que você tenha uma entrada chamada `database` e ela tenha o valor
+`nil`, e uma lista de entradas filhas com: `host`, `port`, `user`, `pwd`.
+
+Se você solicitar o valor completo de configuração `database` receberá algo
+como isto:
+```json
+{
+  "value": null,
+  "childs": {
+    "host": { "value": "hostname", "childs": [] },
+    "port": { "value": 123, "childs": [] },
+    "user": { "value": "username", "childs": [] },
+    "pwd": { "value": "password", "childs": [] },
+  }
+}
+```
+
+Você também poderia solicitar somente o valor explícito para `database`,
+o que retornaria:
+```json
+null
+```
+
+Mas se preferisse poderia obter o valor explícito diretamente de um
+filho como `database.host`, que retornaria:
+```json
+"hostname"
+```
+
+Agora imagine a combinação de vários níveis de objetos filhos.
+Com isso você pode acessar um valor de configuração como se fosse
+um espaço de nomes acessíveis hierarquicamente.
+
 ## Algumas notas
 
 * Ao instalar o servidor é definida uma chave de acesso mestra, e só essa
@@ -87,3 +160,4 @@ pré-definido.
 * Durante a implantação em outros ambientes, uma chave de acesso para cada
   aplicativo é criada e essa fica em poder apenas do administrador da
   infraestrutura.
+

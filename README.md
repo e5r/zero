@@ -121,10 +121,10 @@ como isto:
 {
   "value": null,
   "childs": {
-    "host": { "value": "hostname", "childs": [] },
-    "port": { "value": 123, "childs": [] },
-    "user": { "value": "username", "childs": [] },
-    "pwd": { "value": "password", "childs": [] },
+    "host": { "value": "hostname", "childs": {} },
+    "port": { "value": 123, "childs": {} },
+    "user": { "value": "username", "childs": {} },
+    "pwd": { "value": "password", "childs": {} },
   }
 }
 ```
@@ -144,6 +144,189 @@ filho como `database.host`, que retornaria:
 Agora imagine a combinação de vários níveis de objetos filhos.
 Com isso você pode acessar um valor de configuração como se fosse
 um espaço de nomes acessíveis hierarquicamente.
+
+### Uma coisa legal
+
+Com essa estrutura onde podemos ter em uma entrada tanto um valor
+quanto uma lista de filhos nos permite criar uma configuração interessante.
+
+Imagine que você tenha que configurar o acesso ao banco de dados de uma
+aplicação. Você poderia fazer isso facilmente com uma primeira entrada chamada
+`database`, e os filhos seriam as propriedades de acesso ao banco como:
+`host`, `port`, `user` e `password`. Logo, sua configuração seria mais ou menos assim:
+```json
+{
+  "value": null,
+  "childs": {
+    "host": { "value": "hostname", "childs": {} },
+    "port": { "value": 123, "childs": {} },
+    "user": { "value": "username", "childs": {} },
+    "pwd": { "value": "password", "childs": {} },
+  }
+}
+```
+
+Mas o fato é que sua aplicação pode se conectar em vários tipos de banco de
+dados, como: `postgres`, `sqlite` ou `mssql`. Como fazer?
+
+Simples. Adicionamos uma propriedade chamada `type` para informar o tipo do banco.
+Então ficamos assim:
+```json
+{
+  "value": null,
+  "childs": {
+    "type": { "value": "postgres", "childs": {} },
+    "host": { "value": "hostname", "childs": {} },
+    "port": { "value": 123, "childs": {} },
+    "user": { "value": "username", "childs": {} },
+    "pwd": { "value": "password", "childs": {} },
+  }
+}
+```
+
+Agora basta obter a configuração `database.type`, com isso saberemos o tipo de
+banco e então basta obter o restante das informações com as demais chaves:
+`database.host`, `database.port`, `database.user` e `database.pwd`.
+
+Então sempre que mudar o tipo de banco, precisamos apenas alterar os valores
+para tal.
+
+Só que considere que para cada tipo de banco as propriedades filhas serão
+diferentes. Algo como: para o tipo `sqlite` só precisamos da propriedade `file`,
+e para o tipo `mssql` da propriedade `connection-string` e já para o tipo `postgres`
+precisamos de `host`, `port`, `user` e `pwd`.
+
+É bem fácil fazer as mudanças, mas imagine que na verdade o que você pretende
+é que hajam as configurações definidas para os 3 tipos de banco, e a aplicação
+é que vai escolher qual ela quer usar. Então você precisaria deixar já prontas
+todas as opções.
+
+Podemos fazer simples assim:
+```json
+{
+  "value": null,
+  "childs": {
+    "type": { "value": "postgres", "childs": {} },
+    "sqlite": {
+      "value": "file://myfile.sqlite",
+      "childs": {}
+    },
+    "mssql": {
+      "value": "Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;",
+      "childs": {}
+    },
+    "postgres": {
+      "value": null,
+      "childs": {
+        "host": { "value": "hostname", "childs": {} },
+        "port": { "value": 123, "childs": {} },
+        "user": { "value": "username", "childs": {} },
+        "pwd": { "value": "password", "childs": {} },
+      }
+    }
+}
+```
+
+Agora basta continuar obtendo a configuração `database.type`, e caso seja do tipo
+`postgres` basta obter os demais valores: `database.postgres.host`,
+`database.postgres.port`, `database.postgres.user` e `database.postgres.pwd`.
+
+Se for do tipo `sqlite` obtenha o valor do arquivo de banco com `database.sqlite`,
+e se for do tipo `mssql` obtenha o valor da *connection string* com `database.mssql`.
+
+Isso resolve nosso problema, mas poderia ficar um pouco melhor.
+
+Vejamos algumas mudanças que podemos fazer:
+```json
+{
+  "value": "postgres",
+  "childs": {
+    "sqlite": {
+      "value": "file://myfile.sqlite",
+      "childs": {}
+    },
+    "mssql": {
+      "value": "Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;",
+      "childs": {}
+    },
+    "postgres": {
+      "value": null,
+      "childs": {
+        "host": { "value": "hostname", "childs": {} },
+        "port": { "value": 123, "childs": {} },
+        "user": { "value": "username", "childs": {} },
+        "pwd": { "value": "password", "childs": {} },
+      }
+    }
+}
+```
+
+Observe o que mudamos:
+
+* Removemos a entrada `type` e colocamos o valor diretamente em "value" na raiz
+
+Na verdade nós só simplificamos um pouco as coisas, e agora ao invés de buscar
+por `database.type` para saber o tipo do banco, basta  buscar por `database`, e o
+resto segue como antes.
+
+Mas agora, se você já desenvolve algo que conecte a um banco de dados, deve saber
+que você pode guardar as configurações de duas formas.
+
+1. Guardando diretamente uma *connection string* como:
+**Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;**
+
+2. Ou também poderia guardar as informações separadamente como:
+* Server=myServerAddress
+* Database=myDataBase
+* Trusted_Connection=True
+
+E depois jutar isso em uma conection string.
+
+Então seria bom guardar os valores nas duas formas, e deixar a própria aplicação
+escolher o que melhor convém pra ela.
+
+Então vamos mudar a configuração para:
+```json
+{
+  "value": "mssql",
+  "childs": {
+    "sqlite": {
+      "value": "file://myfile.sqlite",
+      "childs": {
+        "fileName": { "value": "myfile.sqlite", "childs": {} }
+      }
+    },
+    "mssql": {
+      "value": "Server=myServerAddress;Database=myDataBase;Trusted_Connection=True;",
+      "childs": {
+        "server": { "value": "myServerAddress", "childs": {} },
+        "database": { "value": "myDataBase", "childs": {} },
+        "trusted_connection": { "value": true, "childs": {} }
+      }
+    },
+    "postgres": {
+      "value": "Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;",
+      "childs": {
+        "host": { "value": "127.0.0.1", "childs": {} },
+        "port": { "value": 1254323, "childs": {} },
+        "db": { "value": "myDataBase", "childs": {} },
+        "user": { "value": "myUsername", "childs": {} },
+        "pwd": { "value": "myPassword", "childs": {} },
+      }
+    }
+}
+```
+
+Agora, apesar de termos aumentado nossa configuração, demos a aplicação a flexibilidade
+no obter as configurações.
+
+Agora a aplicação pode buscar o tipo da configuração com `database`, e com base no tipo ela
+pode obter ou a *connection string* completa com `database.mssql`, ou pode obter cada
+pedaço da configuração com `database.mssql.server`, `database.mssql.database` e
+`database.mssql.trusted_connection`. O que importa é que fica a critério da aplicação
+escolher o melhor método para ela usar, você como administrador de infraestrutura, deu
+a faca e o queijo pra ela.
+
 
 ## Algumas notas
 

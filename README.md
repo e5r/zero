@@ -93,17 +93,9 @@ que atenda aos critérios abaixo:
 
 3. O que é um valor de entrada de configuração?
 
-Cada entrada de configuração pode ter um dos seguintes valores:
+Cada entrada de configuração pode estar vazia (`null`) ou conter uma `string`.
 
-* `nil` - Nenhum valor informado
-* `byte` - Valor de 1 byte (8-bits)
-* `int32` - Valor de 4 bytes (32-bit signed integer, two's complement)
-* `int64`	- Valor de 8 bytes (64-bit signed integer, two's complement)
-* `uint64` - Valor de 8 bytes (64-bit unsigned integer)
-* `double` - Valor de 8 bytes (64-bit IEEE 754-2008 binary floating point)
-* `decimal128` - Valor de 16 bytes (128-bit IEEE 754-2008 decimal floating point)
-
-> Dados baseados na especificação [BSON](https://bsonspec.org/spec.html)
+> Toda `string` é UTF-8
 
 Também tem uma lista de entradas filhas.
 

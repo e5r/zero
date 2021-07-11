@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project>
+  <PropertyGroup>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <FileVersion>$(VersionPrefix).0</FileVersion>
+    <AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
+    <RootPkgNamespace>E5R.Zero</RootPkgNamespace>
+    <Product>E5R.Zero</Product>
+    <Company>E5R Development Team</Company>
+    <Copyright>Copyright (c) E5R Development Team</Copyright>
+    <Authors>erlimar</Authors>
+    <RepositoryUrl>https://github.com/e5r/zero</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>ttps://github.com/e5r/zero</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/e5r/manifest/blob/master/license/APACHE-2.0.txt</PackageLicenseUrl>
+    <PackageIconUrl>https://avatars3.githubusercontent.com/u/8513737</PackageIconUrl>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugType>Full</DebugType>
+  </PropertyGroup>
+</Project>

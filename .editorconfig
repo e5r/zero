@@ -5,7 +5,7 @@ root = true
 [*]
 indent_style = space
 indent_size = 4
-end_of_line = lf
+end_of_line = crlf
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
@@ -20,6 +20,9 @@ trim_trailing_whitespace = false
 [*.cs]
 dotnet_separate_import_directive_groups = true
 dotnet_sort_system_directives_first = true
-insert_final_newline = true
 file_header_template = Copyright (c) E5R Development Team. All rights reserved.\nThis file is a part of E5R.Zero.\nLicensed under the Apache version 2.0: https://github.com/e5r/manifest/blob/master/license/APACHE-2.0.txt
 dotnet_analyzer_diagnostic.category-Style.severity = warning
+
+# Regras específicas
+dotnet_diagnostic.IDE0022.severity = none
+dotnet_diagnostic.IDE0058.severity = none

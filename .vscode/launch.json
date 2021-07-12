@@ -25,7 +25,7 @@
             "name": "Build.csproj",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "builder",
+            "preLaunchTask": "build-builder",
             "program": "${workspaceFolder}/build/bin/Debug/netcoreapp3.1/Build.dll",
             "args": [],
             "cwd": "${workspaceFolder}/build",

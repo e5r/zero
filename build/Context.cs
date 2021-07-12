@@ -5,22 +5,35 @@ using Cake.Core;
 using Cake.Core.Diagnostics;
 using Cake.Frosting;
 using System.Text.Json;
+using Cake.Common;
+using Microsoft.DotNet.PlatformAbstractions;
 
 public class Context : FrostingContext
 {
     private const string BuildConfigFile = "build.json";
 
     public string BasePath { get; set; }
-    public ConfigData ConfigData { get; set; }
+    public string BuildConfiguration { get; set; }
+    public string Runtime { get; set; }
+    public bool PublishReadyToRun { get; set; }
+    public bool PublishSingleFile { get; set; }
+    public bool SelfContained { get; set; }
+    public ConfigFile ConfigFile { get; set; }
 
     public Context(ICakeContext context)
         : base(context)
     {
+        BuildConfiguration = context.Argument("configuration", "Release");
+        Runtime = context.Argument("runtime", RuntimeEnvironment.GetRuntimeIdentifier());
+        PublishReadyToRun = context.Argument("ready-to-run", false);
+        PublishSingleFile = context.Argument("single-file", false);
+        SelfContained = context.Argument("self-contained", false);
+
         var path = SearchBuildConfigFile();
 
-        ConfigData = !string.IsNullOrWhiteSpace(path)
+        ConfigFile = !string.IsNullOrWhiteSpace(path)
             ? LoadBuildConfigFromFile(path)
-            : ConfigData.Default;
+            : ConfigFile.Default;
 
         BasePath = BasePath ?? Directory.GetCurrentDirectory();
     }
@@ -48,7 +61,7 @@ public class Context : FrostingContext
         return null;
     }
 
-    private ConfigData LoadBuildConfigFromFile(string filePath)
+    private ConfigFile LoadBuildConfigFromFile(string filePath)
     {
         try
         {
@@ -57,7 +70,7 @@ public class Context : FrostingContext
                 throw new FileNotFoundException($"Build config file not found!", filePath);
             }
 
-            return JsonSerializer.Deserialize<ConfigData>(File.ReadAllText(filePath), new JsonSerializerOptions
+            return JsonSerializer.Deserialize<ConfigFile>(File.ReadAllText(filePath), new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             });
@@ -69,6 +82,6 @@ public class Context : FrostingContext
 
         Log.Warning("Using default build configuration");
 
-        return ConfigData.Default;
+        return ConfigFile.Default;
     }
 }

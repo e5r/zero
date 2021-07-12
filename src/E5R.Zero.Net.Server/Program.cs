@@ -21,6 +21,12 @@ namespace E5R.Zero.Net.Server
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureKestrel(options =>
+                    {
+#if DEBUG
+                        options.ListenLocalhost(5000, o => o.Protocols = HttpProtocols.Http2);
+#endif
+                    });
                     webBuilder.UseStartup<Startup>();
                 });
     }

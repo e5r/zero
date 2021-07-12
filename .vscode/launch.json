@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (web)",
+            "name": "E5R.Zero.Net.Server",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -22,9 +22,15 @@
             }
         },
         {
-            "name": ".NET Core Attach",
+            "name": "Build.csproj",
             "type": "coreclr",
-            "request": "attach"
+            "request": "launch",
+            "preLaunchTask": "builder",
+            "program": "${workspaceFolder}/build/bin/Debug/netcoreapp3.1/Build.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/build",
+            "console": "internalConsole",
+            "stopAtEntry": false
         }
     ]
 }

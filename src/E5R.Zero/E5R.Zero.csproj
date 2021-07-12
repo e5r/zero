@@ -2,4 +2,8 @@
 
   <Import Project="..\..\package.props" />
 
+  <ItemGroup>
+    <ProjectReference Include="..\E5R.Zero.Domain\E5R.Zero.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

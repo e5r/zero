@@ -10,4 +10,9 @@
     <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\E5R.Zero\E5R.Zero.csproj" />
+    <ProjectReference Include="..\E5R.Zero.Data.MongoDB\E5R.Zero.Data.MongoDB.csproj" />
+  </ItemGroup>
+
 </Project>

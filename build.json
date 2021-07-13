@@ -5,5 +5,9 @@
     "component": "E5R.Zero.Net.Server",
     "name": "zero-server",
     "excludes": []
+  }],
+  "testArtifacts": [{
+    "component": "E5R.Zero.UnitTest",
+    "name": "zero"
   }]
 }

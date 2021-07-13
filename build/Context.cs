@@ -1,5 +1,6 @@
 using System.IO;
 using System;
+using System.Linq;
 
 using Cake.Core;
 using Cake.Core.Diagnostics;
@@ -18,6 +19,7 @@ public class Context : FrostingContext
     public bool PublishReadyToRun { get; set; }
     public bool PublishSingleFile { get; set; }
     public bool SelfContained { get; set; }
+    public DistributeFormat DistributeFormat { get; set; }
     public ConfigFile ConfigFile { get; set; }
 
     public Context(ICakeContext context)
@@ -28,6 +30,33 @@ public class Context : FrostingContext
         PublishReadyToRun = context.Argument("ready-to-run", false);
         PublishSingleFile = context.Argument("single-file", false);
         SelfContained = context.Argument("self-contained", false);
+
+        var distFormat = context.Argument("dist-format", "zip").ToLowerInvariant();
+
+        switch (distFormat)
+        {
+            case "bz":
+            case "bz2":
+            case "bzip":
+            case "bzip2":
+                DistributeFormat = DistributeFormat.BZip2;
+                break;
+
+            case "gz":
+            case "gzip":
+                DistributeFormat = DistributeFormat.GZip;
+                break;
+
+            // "z"
+            // "zip"
+            default:
+                if (!string.IsNullOrEmpty(distFormat) && !new[] { "z", "zip" }.Contains(distFormat))
+                {
+                    context.Log.Warning($"Invalid \"dist-format\" parameter. Assuming the default value \"{DistributeFormat.Zip}\"");
+                }
+                DistributeFormat = DistributeFormat.Zip;
+                break;
+        }
 
         var path = SearchBuildConfigFile();
 

@@ -12,8 +12,8 @@ using Cake.Frosting;
 [TaskName("Publish")]
 public sealed class PublishTask : FrostingTask<Context>
 {
-    private const string SourceDirectory = "src";
-    private const string ArtifactsDirectory = "artifacts";
+    internal const string SourceDirectory = "src";
+    internal const string ArtifactsDirectory = "artifacts";
 
     public override void Run(Context context)
     {
@@ -28,7 +28,8 @@ public sealed class PublishTask : FrostingTask<Context>
 
         Parallel.ForEach(artifacts, () => 0, (artifact, loopState, localSum) =>
         {
-            context.Log.Information("Publishing artifact {0} from component {1}", artifact.Name, artifact.Component);
+            var artifactName = $"{artifact.Name}_{context.Runtime.ToLowerInvariant()}";
+            context.Log.Information("Publishing artifact {0} from component {1}", artifactName, artifact.Component);
 
             context.DotNetCorePublish($"{SourceDirectory}/{artifact.Component}/{artifact.Component}.csproj", new DotNetCorePublishSettings
             {
@@ -37,12 +38,12 @@ public sealed class PublishTask : FrostingTask<Context>
                 PublishReadyToRun = context.PublishReadyToRun,
                 PublishSingleFile = context.PublishSingleFile,
                 SelfContained = context.SelfContained,
-                OutputDirectory = $"{ArtifactsDirectory}/{artifact.Name}_{context.Runtime.ToLowerInvariant()}"
+                OutputDirectory = $"{ArtifactsDirectory}/{artifactName}"
             });
 
             (context.ConfigFile.PublishGlobalExcludes ?? Enumerable.Empty<string>()).ToList().ForEach(pattern =>
             {
-                var excludePatternPath = $"{ArtifactsDirectory}/{artifact.Name}_{context.Runtime.ToLowerInvariant()}/{pattern}";
+                var excludePatternPath = $"{ArtifactsDirectory}/{artifactName}/{pattern}";
 
                 context.Log.Information($"Removing files entered in the global configuration: {excludePatternPath}");
                 context.DeleteFiles(excludePatternPath);

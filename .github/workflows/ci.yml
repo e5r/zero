@@ -23,4 +23,5 @@ jobs:
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
-          ./codecov -v -Z -F unittests -f 'test/*/TestResults/*/coverage.cobertura.xml'
+      - name: Upload Codecov
+        run: ./codecov -Z -F unittests

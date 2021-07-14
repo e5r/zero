@@ -1,0 +1,36 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "E5R.Zero.Net.Server",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/E5R.Zero.Net.Server/bin/Debug/net5.0/E5R.Zero.Net.Server.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/E5R.Zero.Net.Server",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "Build.csproj",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-builder",
+            "program": "${workspaceFolder}/build/bin/Debug/netcoreapp3.1/Build.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/build",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}

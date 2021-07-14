@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <Import Project="..\..\package.props" />
+
+  <ItemGroup>
+    <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="E5R.Architecture.Infrastructure.AspNetCore" Version="0.9.0-beta-291" />
+    <PackageReference Include="E5R.Architecture.Infrastructure.Defaults" Version="0.9.0-beta-291" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\E5R.Zero\E5R.Zero.csproj" />
+    <ProjectReference Include="..\E5R.Zero.Data.MongoDB\E5R.Zero.Data.MongoDB.csproj" />
+  </ItemGroup>
+
+</Project>

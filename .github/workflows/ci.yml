@@ -1,0 +1,39 @@
+name: Build CI
+
+on:
+  push:
+    branches: [ master, develop ]
+
+  pull_request:
+    branches: [ master, develop ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Information
+        run: |
+          echo GITHUB_RUN_ID = ${GITHUB_RUN_ID}
+          echo GITHUB_RUN_NUMBER = ${GITHUB_RUN_NUMBER}
+          echo GITHUB_EVENT_NAME = ${GITHUB_EVENT_NAME}
+          echo GITHUB_SHA = ${GITHUB_SHA}
+          echo GITHUB_REF = ${GITHUB_REF}
+          echo GITHUB_HEAD_REF = ${GITHUB_HEAD_REF}
+          echo GITHUB_BASE_REF = ${GITHUB_BASE_REF}
+          echo RUNNER_OS = ${RUNNER_OS}
+
+      - name: build.sh
+        run: ./build.sh
+
+      - name: Install Codecov Uploader
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+
+      - name: Upload Codecov
+        run: ./codecov -Z -F unittests

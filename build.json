@@ -1,0 +1,17 @@
+{
+  "solutionFile": "./E5R.Zero.sln",
+  "publishGlobalExcludes": ["*.pdb", "appsettings.*.json"],
+  "publishArtifacts": [{
+    "component": "E5R.Zero.Net.Server",
+    "name": "zero-server",
+    "excludes": []
+  }, {
+    "component": "E5R.Zero.Net.Client",
+    "name": "zero-client",
+    "nuget": true
+  }],
+  "testArtifacts": [{
+    "component": "E5R.Zero.UnitTest",
+    "name": "zero"
+  }]
+}

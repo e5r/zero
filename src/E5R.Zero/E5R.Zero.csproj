@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\package.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\E5R.Zero.Domain\E5R.Zero.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="E5R.Architecture.Business" Version="0.9.0-beta-291" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\package.props" />
+
+  <ItemGroup>
+    <PackageReference Include="E5R.Architecture.Core" Version="0.9.0-beta-291" />
+  </ItemGroup>
+
+</Project>

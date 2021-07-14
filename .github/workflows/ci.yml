@@ -18,3 +18,9 @@ jobs:
 
       - name: build.sh
         run: ./build.sh
+
+      - name: Install Codecov Uploader
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -v -Z -F unittests -f 'test/*/TestResults/*/coverage.cobertura.xml'

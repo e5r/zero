@@ -5,6 +5,10 @@
     "component": "E5R.Zero.Net.Server",
     "name": "zero-server",
     "excludes": []
+  }, {
+    "component": "E5R.Zero.Net.Client",
+    "name": "zero-client",
+    "nuget": true
   }],
   "testArtifacts": [{
     "component": "E5R.Zero.UnitTest",

@@ -1,13 +1,9 @@
-
 using System.IO;
 using System.Threading;
 using System.Linq;
 using System.Threading.Tasks;
-
-using Cake.Common.IO;
 using Cake.Compression;
-using Cake.Common.Tools.DotNetCore;
-using Cake.Common.Tools.DotNetCore.Publish;
+using Cake.Common.IO;
 using Cake.Core.Diagnostics;
 using Cake.Frosting;
 
@@ -32,24 +28,37 @@ public sealed class DistributeTask : FrostingTask<Context>
 
         Parallel.ForEach(artifacts, () => 0, (artifact, loopState, localSum) =>
         {
-            var artifactName = $"{artifact.Name}_{context.Runtime.ToLowerInvariant()}";
+            var artifactName = $"{artifact.Name}";
 
-            switch (context.DistributeFormat)
+            if (artifact.Nuget)
             {
-                case DistributeFormat.Zip:
-                    context.Log.Information("Compressing artifact {0}.zip", artifactName);
-                    context.ZipCompress($"{PublishTask.ArtifactsDirectory}/{artifactName}", $"{DistributeDirectory}/{artifactName}.zip");
-                    break;
+                artifactName += !string.IsNullOrWhiteSpace(context.VersionSuffix) ? $"_{context.VersionSuffix}" : string.Empty;
 
-                case DistributeFormat.GZip:
-                    context.Log.Information("Compressing artifact {0}.gz", artifactName);
-                    context.GZipCompress($"{PublishTask.ArtifactsDirectory}/{artifactName}", $"{DistributeDirectory}/{artifactName}.gz");
-                    break;
+                context.Log.Information("Copyng nuget artifact {0}", artifactName);
 
-                case DistributeFormat.BZip2:
-                    context.Log.Information("Compressing artifact {0}.bz2", artifactName);
-                    context.BZip2Compress($"{PublishTask.ArtifactsDirectory}/{artifactName}", $"{DistributeDirectory}/{artifactName}.bz2");
-                    break;
+                context.CopyFiles($"{PublishTask.ArtifactsDirectory}/{artifactName}/*.nupkg", $"{DistributeDirectory}/");
+            }
+            else
+            {
+                artifactName += $"_{context.Runtime.ToLowerInvariant()}";
+
+                switch (context.DistributeFormat)
+                {
+                    case DistributeFormat.Zip:
+                        context.Log.Information("Compressing artifact {0}.zip", artifactName);
+                        context.ZipCompress($"{PublishTask.ArtifactsDirectory}/{artifactName}", $"{DistributeDirectory}/{artifactName}.zip");
+                        break;
+
+                    case DistributeFormat.GZip:
+                        context.Log.Information("Compressing artifact {0}.gz", artifactName);
+                        context.GZipCompress($"{PublishTask.ArtifactsDirectory}/{artifactName}", $"{DistributeDirectory}/{artifactName}.gz");
+                        break;
+
+                    case DistributeFormat.BZip2:
+                        context.Log.Information("Compressing artifact {0}.bz2", artifactName);
+                        context.BZip2Compress($"{PublishTask.ArtifactsDirectory}/{artifactName}", $"{DistributeDirectory}/{artifactName}.bz2");
+                        break;
+                }
             }
 
             return ++localSum;

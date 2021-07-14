@@ -16,6 +16,7 @@ public class Context : FrostingContext
     public string BasePath { get; set; }
     public string BuildConfiguration { get; set; }
     public string Runtime { get; set; }
+    public string VersionSuffix { get; set; }
     public bool PublishReadyToRun { get; set; }
     public bool PublishSingleFile { get; set; }
     public bool SelfContained { get; set; }
@@ -30,6 +31,7 @@ public class Context : FrostingContext
         PublishReadyToRun = context.Argument("ready-to-run", false);
         PublishSingleFile = context.Argument("single-file", false);
         SelfContained = context.Argument("self-contained", false);
+        VersionSuffix = context.Argument("version-suffix", string.Empty);
 
         var distFormat = context.Argument("dist-format", "zip").ToLowerInvariant();
 

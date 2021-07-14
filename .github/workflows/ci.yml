@@ -31,9 +31,11 @@ jobs:
         run: ./build.sh
 
       - name: Install Codecov Uploader
+        if: ${{ github.event_name == 'push' }}
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
 
       - name: Upload Codecov
+        if: ${{ github.event_name == 'push' }}
         run: ./codecov -Z -F unittests

@@ -19,10 +19,12 @@ do ambiente de desenvolvimento em si.
 
 1. Adicione o Feed E5R em suas origens NuGet
 ```sh
-$ dotnet nuget add source --username USERNAME --password PASSWORD --store-password-in-clear-text --name github-e5r "https://nuget.pkg.github.com/e5r/index.json"
+$ dotnet nuget add source --username USERNAME \
+  --password PASSWORD --store-password-in-clear-text \
+  --name github-e5r "https://nuget.pkg.github.com/e5r/index.json"
 ```
 
 2. Adicione o pacote em seu projeto:
 ```sh
-dotnet add PROJECT package E5R.Zero.Net.Client --version 0.1.0-alpha-0014
+dotnet add PROJECT package E5R.Zero.Net.Client --version *
 ```

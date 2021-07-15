@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\E5R.Zero\E5R.Zero.csproj" />
-    <ProjectReference Include="..\E5R.Zero.Data.MongoDB\E5R.Zero.Data.MongoDB.csproj" />
+    <ProjectReference Include="..\E5R.Zero.Data.SQLite\E5R.Zero.Data.SQLite.csproj" />
   </ItemGroup>
 
 </Project>

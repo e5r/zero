@@ -8,8 +8,8 @@ do ambiente de desenvolvimento em si.
 
 ## Continuous status
 
- &nbsp; | &nbsp;
-------- | ------
+Branch | Status
+:----- | :-----
 `build` **master** | ![](https://github.com/e5r/zero/actions/workflows/ci.yml/badge.svg?branch=master)
 `build` **develop** | ![](https://github.com/e5r/zero/actions/workflows/ci.yml/badge.svg?branch=develop)
 `coverage` **master** | ![](https://codecov.io/gh/e5r/zero/branch/master/graph/badge.svg?token=LMUB5UDA11)
@@ -17,8 +17,8 @@ do ambiente de desenvolvimento em si.
 
 ## Pacotes NuGet
 
-&nbsp;  | &nbsp;
-------- | :----
+Package  | Status
+:------ | :-----
 E5R.Zero.Net.Client | [![](https://img.shields.io/nuget/v/E5R.Zero.Net.Client.png?style=flat-square)](https://www.nuget.org/packages/E5R.Zero.Net.Client)
 
 ## Começando com a versão em desenvolvimento

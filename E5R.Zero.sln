@@ -11,11 +11,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{A4B7C179-0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E5R.Zero.UnitTest", "test\E5R.Zero.UnitTest\E5R.Zero.UnitTest.csproj", "{497DFF20-6AD0-40C4-9F0F-115A5DD4FB55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E5R.Zero.Data.MongoDB", "src\E5R.Zero.Data.MongoDB\E5R.Zero.Data.MongoDB.csproj", "{0D58155F-2131-484A-BD41-7670F0028325}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E5R.Zero.Data.SQLite", "src\E5R.Zero.Data.SQLite\E5R.Zero.Data.SQLite.csproj", "{0D58155F-2131-484A-BD41-7670F0028325}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E5R.Zero.Net.Server", "src\E5R.Zero.Net.Server\E5R.Zero.Net.Server.csproj", "{966F6C22-3FF4-450B-82B4-53F864A5F99D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root", "Root", "{901D8820-E28E-11EB-896B-A3B79D750A7C}"
+ProjectSection(SolutionItems) = preProject
+	build.json = build.json
+	IDEA.md = IDEA.md
+	LICENSE = LICENSE
+	package.props = package.props
+	README.md = README.md
+EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{941FD680-E28E-11EB-896B-A3B79D750A7C}"
 EndProject

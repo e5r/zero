@@ -15,6 +15,12 @@ do ambiente de desenvolvimento em si.
 `coverage` **master** | ![](https://codecov.io/gh/e5r/zero/branch/master/graph/badge.svg?token=LMUB5UDA11)
 `coverage` **develop** | ![](https://codecov.io/gh/e5r/zero/branch/develop/graph/badge.svg?token=LMUB5UDA11)
 
+## Pacotes NuGet
+
+&nbsp;  | &nbsp;
+------- | :----
+E5R.Zero.Net.Client | [![](https://img.shields.io/nuget/v/E5R.Zero.Net.Client.png?style=flat-square)](https://www.nuget.org/packages/E5R.Zero.Net.Client)
+
 ## Começando com a versão em desenvolvimento
 
 1. Adicione o Feed E5R em suas origens NuGet

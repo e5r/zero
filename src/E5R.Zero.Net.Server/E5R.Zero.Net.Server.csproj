@@ -2,6 +2,10 @@
 
   <Import Project="..\..\package.props" />
 
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
   <ItemGroup>
     <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
   </ItemGroup>

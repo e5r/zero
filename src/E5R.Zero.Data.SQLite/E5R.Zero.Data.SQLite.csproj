@@ -2,6 +2,10 @@
 
   <Import Project="..\..\package.props" />
 
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="E5R.Architecture.Data.EntityFrameworkCore" Version="0.9.0-beta-295" />
   </ItemGroup>

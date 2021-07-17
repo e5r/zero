@@ -2,6 +2,10 @@
 
   <Import Project="..\..\package.props" />
 
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\E5R.Zero.Domain\E5R.Zero.Domain.csproj" />
   </ItemGroup>

@@ -29,6 +29,8 @@ namespace E5R.Zero.Features.AccessKeys
         {
             await Rules.ByCategory(AccessKeyRuleGroup.RnAkWriteCategory).EnsureAsync(input);
 
+            // TODO: Criar RN fingerprint é unico no sistema
+
             throw new System.NotImplementedException();
         }
     }

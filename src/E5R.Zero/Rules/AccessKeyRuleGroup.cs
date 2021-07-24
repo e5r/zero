@@ -22,5 +22,11 @@ namespace E5R.Zero.Rules
             public const string Code = "RNAK-02";
             public const string Description = "The keydata field is required to save an access key";
         }
+
+        public static class RnAk03
+        {
+            public const string Code = "RNAK-03";
+            public const string Description = "The fingerprint field is unique";
+        }
     }
 }

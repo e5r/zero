@@ -2,8 +2,12 @@
 // This file is a part of E5R.Zero.
 // Licensed under the Apache version 2.0: https://github.com/e5r/manifest/blob/master/license/APACHE-2.0.txt
 
+using System;
 using System.IO;
+using System.Threading.Tasks;
 
+using E5R.Architecture.Core;
+using E5R.Architecture.Data.Abstractions;
 using E5R.Zero.Domain.Entities;
 using E5R.Zero.Rules;
 using E5R.Zero.Rules.AccessKeys;
@@ -35,10 +39,10 @@ namespace E5R.Zero.UnitTest.Rules
         [InlineData(null)]
         [InlineData("")]
         [InlineData("    ")]
-        public void FingerprintIsRequiredToSave_GaranteQue_CampoFingerprint_SejaObrigatorio(string value)
+        public async Task FingerprintIsRequiredToSave_GaranteQue_CampoFingerprint_SejaObrigatorio(string value)
         {
             var rule = new FingerprintIsRequiredToWrite();
-            var result = rule.Check(new AccessKeyEntity {Fingerprint = value});
+            var result = await rule.CheckAsync(new AccessKeyEntity {Fingerprint = value});
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccess);
@@ -57,10 +61,10 @@ namespace E5R.Zero.UnitTest.Rules
 
         [Fact(DisplayName = nameof(KeyDataIsRequiredAndMustHaveContentToWrite) + " garante que campo 'KeyData' seja obrigatório")]
         [Trait(nameof(Target), nameof(KeyDataIsRequiredAndMustHaveContentToWrite))]
-        public void KeyDataIsRequiredToSave_GaranteQue_CampoKeyData_SejaObrigatorio()
+        public async Task KeyDataIsRequiredToSave_GaranteQue_CampoKeyData_SejaObrigatorio()
         {
             var rule = new KeyDataIsRequiredAndMustHaveContentToWrite();
-            var result = rule.Check(new AccessKeyEntity {KeyData = null});
+            var result = await rule.CheckAsync(new AccessKeyEntity {KeyData = null});
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccess);
@@ -68,14 +72,14 @@ namespace E5R.Zero.UnitTest.Rules
 
         [Fact(DisplayName = nameof(KeyDataIsRequiredAndMustHaveContentToWrite) + " garante que campo 'KeyData' tenha conteúdo")]
         [Trait(nameof(Target), nameof(KeyDataIsRequiredAndMustHaveContentToWrite))]
-        public void KeyDataIsRequiredToSave_GaranteQue_CampoKeyData_TenhaConteudo()
+        public async Task KeyDataIsRequiredToSave_GaranteQue_CampoKeyData_TenhaConteudo()
         {
             var streamMock = new Mock<Stream>();
 
             streamMock.Setup(m => m.Length).Returns(0);
 
             var rule = new KeyDataIsRequiredAndMustHaveContentToWrite();
-            var result = rule.Check(new AccessKeyEntity {KeyData = streamMock.Object});
+            var result = await rule.CheckAsync(new AccessKeyEntity {KeyData = streamMock.Object});
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccess);
@@ -83,7 +87,7 @@ namespace E5R.Zero.UnitTest.Rules
 
         [Fact(DisplayName = nameof(KeyDataIsRequiredAndMustHaveContentToWrite) + " garante que campo 'KeyData' permita leitura")]
         [Trait(nameof(Target), nameof(KeyDataIsRequiredAndMustHaveContentToWrite))]
-        public void KeyDataIsRequiredToSave_GaranteQue_CampoKeyData_PermitaLeitura()
+        public async Task KeyDataIsRequiredToSave_GaranteQue_CampoKeyData_PermitaLeitura()
         {
             var streamMock = new Mock<Stream>();
 
@@ -91,10 +95,48 @@ namespace E5R.Zero.UnitTest.Rules
             streamMock.Setup(m => m.CanRead).Returns(false);
 
             var rule = new KeyDataIsRequiredAndMustHaveContentToWrite();
-            var result = rule.Check(new AccessKeyEntity {KeyData = streamMock.Object});
+            var result = await rule.CheckAsync(new AccessKeyEntity {KeyData = streamMock.Object});
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccess);
         }
+
+        [Fact(DisplayName = nameof(FingerprintIsUniqueToWrite) + " requer um armazém")]
+        [Trait(nameof(Target), nameof(FingerprintIsUniqueToWrite))]
+        public void FingerprintIsUnique_RequerUmRepositorioEncontravel()
+        {
+            var ex = Assert.Throws<ArgumentNullException>(() => new FingerprintIsUniqueToWrite(null));
+
+            Assert.Equal("storage", ex.ParamName);
+        }
+
+        [Fact(DisplayName = nameof(FingerprintIsUniqueToWrite) + " falha quando já existe um registro com fingerprint")]
+        [Trait(nameof(Target), nameof(FingerprintIsUniqueToWrite))]
+        public async Task FingerprintIsUnique_FalhaQuando_JaExisteUmRegistroComFingerprint()
+        {
+            var storageMock = new Mock<IStorage<AccessKeyEntity>>();
+
+            storageMock.Setup(m => m.Find(new object[] {"already-exists"}, null)).Returns(new AccessKeyEntity());
+
+            var lazyMock = new Mock<ILazy<IStorage<AccessKeyEntity>>>();
+
+            lazyMock.Setup(m => m.Value).Returns(storageMock.Object);
+
+            var streamMock = new Mock<Stream>();
+
+            streamMock.Setup(m => m.Length).Returns(1);
+            streamMock.Setup(m => m.CanRead).Returns(true);
+
+            var rule = new FingerprintIsUniqueToWrite(lazyMock.Object);
+            var result = await rule.CheckAsync(new AccessKeyEntity
+                {Fingerprint = "already-exists", KeyData = streamMock.Object});
+
+            Assert.NotNull(result);
+            Assert.False(result.IsSuccess);
+
+            storageMock.Verify(v => v.Find(new object[] {"already-exists"}, null), Times.Exactly(1));
+        }
+
+        // TODO: Implementar teste que não falha para FingerprintIsUniqueToWrite
     }
 }

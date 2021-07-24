@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using E5R.Architecture.Core;
 using E5R.Zero.Domain.Entities;
 
-using static E5R.Architecture.Core.RuleCheckResult;
 using static E5R.Zero.Rules.AccessKeyRuleGroup;
 
 namespace E5R.Zero.Rules.AccessKeys
@@ -17,13 +16,14 @@ namespace E5R.Zero.Rules.AccessKeys
     /// </summary>
     public class FingerprintIsRequiredToWrite : RuleFor<AccessKeyEntity>
     {
-        public FingerprintIsRequiredToWrite() : base(RnAk01.Code, RnAkWriteCategory, RnAk01.Description)
+        public FingerprintIsRequiredToWrite() : base(WriteCategory.RnAk01.Code, WriteCategory.WriteCategoryKey,
+            WriteCategory.RnAk01.Description)
         {
         }
 
-        public override Task<RuleCheckResult> CheckAsync(AccessKeyEntity target)
+        public override async Task<RuleCheckResult> CheckAsync(AccessKeyEntity target)
         {
-            return Task.FromResult(string.IsNullOrWhiteSpace(target.Fingerprint) ? Fail : Success);
+            return string.IsNullOrWhiteSpace(target.Fingerprint) ? await Fail() : await Success();
         }
     }
 }

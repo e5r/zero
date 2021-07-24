@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 using E5R.Architecture.Core;
 using E5R.Zero.Domain.Entities;
 
-using static E5R.Architecture.Core.RuleCheckResult;
-using static E5R.Zero.Rules.AccessKeyRuleGroup;
+using static E5R.Zero.Rules.AccessKeyRuleGroup.WriteCategory;
 
 namespace E5R.Zero.Rules.AccessKeys
 {
@@ -17,15 +16,15 @@ namespace E5R.Zero.Rules.AccessKeys
     /// </summary>
     public class KeyDataIsRequiredAndMustHaveContentToWrite : RuleFor<AccessKeyEntity>
     {
-        public KeyDataIsRequiredAndMustHaveContentToWrite() : base(RnAk02.Code, RnAkWriteCategory, RnAk02.Description)
+        public KeyDataIsRequiredAndMustHaveContentToWrite() : base(RnAk02.Code, WriteCategoryKey, RnAk02.Description)
         {
         }
 
-        public override Task<RuleCheckResult> CheckAsync(AccessKeyEntity target)
+        public override async Task<RuleCheckResult> CheckAsync(AccessKeyEntity target)
         {
             return target.KeyData == null || target.KeyData.Length < 1 || !target.KeyData.CanRead
-                ? Task.FromResult(Fail)
-                : Task.FromResult(Success);
+                ? await Fail()
+                : await Success();
         }
     }
 }

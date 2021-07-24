@@ -15,6 +15,7 @@ using Moq;
 
 using Xunit;
 
+using static E5R.Zero.Rules.AccessKeyRuleGroup.WriteCategory;
 using static E5R.Zero.UnitTest.TestUtils.TraitName;
 
 namespace E5R.Zero.UnitTest.Features
@@ -24,7 +25,7 @@ namespace E5R.Zero.UnitTest.Features
     [Trait(nameof(Target), nameof(RegisterNewAccessKeyFeature))]
     public class RegisterNewAccessKeyFeatureTests
     {
-        [Fact(DisplayName = nameof(RegisterNewAccessKeyFeature) + " requer um RuleFor<AccessKeyEntity>")]
+        [Fact(DisplayName = nameof(RegisterNewAccessKeyFeature) + " requer um RuleSet<AccessKeyEntity>")]
         public void Requer_RuleFor()
         {
             var ex = Assert.Throws<ArgumentNullException>(() => new RegisterNewAccessKeyFeature(null));
@@ -45,7 +46,7 @@ namespace E5R.Zero.UnitTest.Features
         }
 
         [Theory(DisplayName = nameof(RegisterNewAccessKeyFeature) + " valida todas as regras da categoria \"" +
-                              AccessKeyRuleGroup.RnAkWriteCategory + "\"")]
+                              WriteCategoryKey + "\"")]
         [ClassData(typeof(InvalidWriteRulesTestData))]
         public async Task ValidatesAllRules_OfRnAkWriteCategory(AccessKeyEntity inputError,
             IRuleFor<AccessKeyEntity> ruleFor)

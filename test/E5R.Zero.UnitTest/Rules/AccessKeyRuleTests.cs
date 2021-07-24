@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 using E5R.Architecture.Core;
 using E5R.Architecture.Data.Abstractions;
 using E5R.Zero.Domain.Entities;
-using E5R.Zero.Rules;
 using E5R.Zero.Rules.AccessKeys;
 
 using Moq;
 
 using Xunit;
 
+using static E5R.Zero.Rules.AccessKeyRuleGroup.WriteCategory;
 using static E5R.Zero.UnitTest.TestUtils.TraitName;
 
 namespace E5R.Zero.UnitTest.Rules
@@ -29,9 +29,9 @@ namespace E5R.Zero.UnitTest.Rules
         {
             var rule = new FingerprintIsRequiredToWrite();
 
-            Assert.Equal(AccessKeyRuleGroup.RnAkWriteCategory, rule.Category);
-            Assert.Equal(AccessKeyRuleGroup.RnAk01.Code, rule.Code);
-            Assert.Equal(AccessKeyRuleGroup.RnAk01.Description, rule.Description);
+            Assert.Equal(WriteCategoryKey, rule.Category);
+            Assert.Equal(RnAk01.Code, rule.Code);
+            Assert.Equal(RnAk01.Description, rule.Description);
         }
 
         [Theory(DisplayName = nameof(FingerprintIsRequiredToWrite) + " garante que campo 'Fingerprint' seja obrigatório")]
@@ -54,9 +54,9 @@ namespace E5R.Zero.UnitTest.Rules
         {
             var rule = new KeyDataIsRequiredAndMustHaveContentToWrite();
 
-            Assert.Equal(AccessKeyRuleGroup.RnAkWriteCategory, rule.Category);
-            Assert.Equal(AccessKeyRuleGroup.RnAk02.Code, rule.Code);
-            Assert.Equal(AccessKeyRuleGroup.RnAk02.Description, rule.Description);
+            Assert.Equal(WriteCategoryKey, rule.Category);
+            Assert.Equal(RnAk02.Code, rule.Code);
+            Assert.Equal(RnAk02.Description, rule.Description);
         }
 
         [Fact(DisplayName = nameof(KeyDataIsRequiredAndMustHaveContentToWrite) + " garante que campo 'KeyData' seja obrigatório")]
@@ -137,6 +137,31 @@ namespace E5R.Zero.UnitTest.Rules
             storageMock.Verify(v => v.Find(new object[] {"already-exists"}, null), Times.Exactly(1));
         }
 
-        // TODO: Implementar teste que não falha para FingerprintIsUniqueToWrite
+        [Fact(DisplayName = nameof(FingerprintIsUniqueToWrite) + " não falha quando não existem outros registros com mesmo fingerprint")]
+        [Trait(nameof(Target), nameof(FingerprintIsUniqueToWrite))]
+        public async Task FingerprintIsUnique_NaoFalhaQuando_NaoExistemRegistrosComMesmoFingerprint()
+        {
+            var storageMock = new Mock<IStorage<AccessKeyEntity>>();
+
+            storageMock.Setup(m => m.Find(new object[] {"does-not-exist"}, null)).Returns((AccessKeyEntity) null);
+
+            var lazyMock = new Mock<ILazy<IStorage<AccessKeyEntity>>>();
+
+            lazyMock.Setup(m => m.Value).Returns(storageMock.Object);
+
+            var streamMock = new Mock<Stream>();
+
+            streamMock.Setup(m => m.Length).Returns(1);
+            streamMock.Setup(m => m.CanRead).Returns(true);
+
+            var rule = new FingerprintIsUniqueToWrite(lazyMock.Object);
+            var result = await rule.CheckAsync(new AccessKeyEntity
+                {Fingerprint = "does-not-exist", KeyData = streamMock.Object});
+
+            Assert.NotNull(result);
+            Assert.True(result.IsSuccess);
+
+            storageMock.Verify(v => v.Find(new object[] {"does-not-exist"}, null), Times.Exactly(1));
+        }
     }
 }

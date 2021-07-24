@@ -8,7 +8,7 @@ using E5R.Architecture.Core;
 using E5R.Architecture.Data.Abstractions;
 using E5R.Zero.Domain.Entities;
 
-using static E5R.Zero.Rules.AccessKeyRuleGroup;
+using static E5R.Zero.Rules.AccessKeyRuleGroup.WriteCategory;
 
 namespace E5R.Zero.Rules.AccessKeys
 {
@@ -20,24 +20,16 @@ namespace E5R.Zero.Rules.AccessKeys
         private ILazy<IStorage<AccessKeyEntity>> Storage { get; }
 
         public FingerprintIsUniqueToWrite(ILazy<IStorage<AccessKeyEntity>> storage) : base(RnAk03.Code,
-            RnAkWriteCategory, RnAk03.Description)
+            WriteCategoryKey, RnAk03.Description)
         {
             Checker.NotNullArgument(storage, nameof(storage));
 
             Storage = storage;
         }
 
-        public override Task<RuleCheckResult> CheckAsync(AccessKeyEntity target)
+        public override async Task<RuleCheckResult> CheckAsync(AccessKeyEntity target)
         {
-            if (Storage.Value.AsFluentQuery().Find(target?.Identifiers) != null)
-            {
-                // TODO: return Fail();
-                // TODO: return Fail("","");
-                return Task.FromResult(RuleCheckResult.Fail);
-            }
-
-            // TODO: return Success();
-            return Task.FromResult(RuleCheckResult.Success);
+            return Storage.Value.AsFluentQuery().Find(target?.Identifiers) != null ? await Fail() : await Success();
         }
     }
 }

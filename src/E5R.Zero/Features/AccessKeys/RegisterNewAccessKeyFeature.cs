@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 using E5R.Architecture.Business;
 using E5R.Architecture.Core;
 using E5R.Zero.Domain.Entities;
-using E5R.Zero.Rules;
+
+using static E5R.Zero.Rules.AccessKeyRuleGroup.WriteCategory;
 
 namespace E5R.Zero.Features.AccessKeys
 {
@@ -27,9 +28,7 @@ namespace E5R.Zero.Features.AccessKeys
 
         protected override async Task<AccessKeyEntity> ExecActionAsync(AccessKeyEntity input)
         {
-            await Rules.ByCategory(AccessKeyRuleGroup.RnAkWriteCategory).EnsureAsync(input);
-
-            // TODO: Criar RN fingerprint é unico no sistema
+            await Rules.ByCategory(WriteCategoryKey).EnsureAsync(input);
 
             throw new System.NotImplementedException();
         }

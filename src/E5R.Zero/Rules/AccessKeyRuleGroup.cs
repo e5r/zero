@@ -9,24 +9,27 @@ namespace E5R.Zero.Rules
     /// </summary>
     public static class AccessKeyRuleGroup
     {
-        public const string RnAkWriteCategory = "accesskey.write";
-
-        public static class RnAk01
+        public static class WriteCategory
         {
-            public const string Code = "RNAK-01";
-            public const string Description = "The fingerprint field is required to save an access key";
-        }
+            public const string WriteCategoryKey = "accesskey.write";
 
-        public static class RnAk02
-        {
-            public const string Code = "RNAK-02";
-            public const string Description = "The keydata field is required to save an access key";
-        }
+            public static class RnAk01
+            {
+                public const string Code = "RNAK-01";
+                public const string Description = "The fingerprint field is required to save an access key";
+            }
 
-        public static class RnAk03
-        {
-            public const string Code = "RNAK-03";
-            public const string Description = "The fingerprint field is unique";
+            public static class RnAk02
+            {
+                public const string Code = "RNAK-02";
+                public const string Description = "The keydata field is required to save an access key";
+            }
+
+            public static class RnAk03
+            {
+                public const string Code = "RNAK-03";
+                public const string Description = "The fingerprint field is unique";
+            }
         }
     }
 }

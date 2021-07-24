@@ -3,7 +3,7 @@ Zero
 
 **Zero** é um serviço de configurações centralizado para softwares. Recebe este nome
 porque pretende ser o primeiro passo no desenvolvimento de qualquer software, ou seja,
-antes do passo 1 do desenvolvimento, temos o **passo zero** que é iniciar a configuração
+antes do passo 1 do desenvolvimento, temos o **passo zero** que é a configuração
 do ambiente em si.
 
 ## Continuous status

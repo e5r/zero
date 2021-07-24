@@ -7,9 +7,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="E5R.Architecture.Infrastructure.AspNetCore" Version="0.9.0-beta-291" />
-    <PackageReference Include="E5R.Architecture.Infrastructure.Defaults" Version="0.9.0-beta-291" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+    <PackageReference Include="E5R.Architecture.Infrastructure.AspNetCore" Version="0.9.0-beta-296" />
+    <PackageReference Include="E5R.Architecture.Infrastructure.Defaults" Version="0.9.0-beta-296" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.38.0" />
   </ItemGroup>
 
   <ItemGroup>

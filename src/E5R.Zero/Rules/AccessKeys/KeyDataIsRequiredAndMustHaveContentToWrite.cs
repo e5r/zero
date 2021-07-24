@@ -12,7 +12,7 @@ using static E5R.Zero.Rules.AccessKeyRuleGroup.WriteCategory;
 namespace E5R.Zero.Rules.AccessKeys
 {
     /// <summary>
-    /// RNAK-02: Os dados da chave requer conteúdo para que a chave seja gravada
+    /// RNAK-02: É preciso haver conteúdo nos dados da chave para que ela seja gravada
     /// </summary>
     public class KeyDataIsRequiredAndMustHaveContentToWrite : RuleFor<AccessKeyEntity>
     {

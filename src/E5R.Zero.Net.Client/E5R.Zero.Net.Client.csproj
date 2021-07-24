@@ -4,7 +4,6 @@
 
   <PropertyGroup>
     <PackageIcon>icon.png</PackageIcon>
-    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

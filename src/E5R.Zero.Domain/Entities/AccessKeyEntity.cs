@@ -10,7 +10,7 @@ namespace E5R.Zero.Domain.Entities
 {
     public class AccessKeyEntity : IIdentifiable
     {
-        public object[] Identifiers => new object[] {Fingerprint};
+        public object[] Identifiers => new object[] { Fingerprint };
 
         public string Fingerprint { get; set; }
         public Stream KeyData { get; set; }

@@ -13,7 +13,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageProject>https://github.com/e5r/zero</PackageProject>
     <PackageLicense>https://github.com/e5r/manifest/blob/master/license/APACHE-2.0.txt</PackageLicense>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <TargetFramework>net5.0</TargetFramework>
     <AnalysisLevel>5.0</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>

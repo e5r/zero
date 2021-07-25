@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="E5R.Architecture.Core" Version="0.9.0-beta-297" />
+    <PackageReference Include="E5R.Architecture.Core" Version="0.9.0-beta-299" />
   </ItemGroup>
 
 </Project>

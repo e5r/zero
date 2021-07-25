@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using E5R.Architecture.Core;
@@ -46,6 +47,9 @@ namespace E5R.Zero.UnitTest.Rules
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccess);
+            Assert.NotEmpty(result.Unconformities);
+            Assert.Equal(rule.Code,result.Unconformities.First().Key);
+            Assert.Equal(rule.Description,result.Unconformities.First().Value);
         }
 
         [Fact(DisplayName = nameof(KeyDataIsRequiredAndMustHaveContentToWrite) + " corresponde a RNAK-002")]
@@ -68,6 +72,9 @@ namespace E5R.Zero.UnitTest.Rules
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccess);
+            Assert.NotEmpty(result.Unconformities);
+            Assert.Equal(rule.Code,result.Unconformities.First().Key);
+            Assert.Equal(rule.Description,result.Unconformities.First().Value);
         }
 
         [Fact(DisplayName = nameof(KeyDataIsRequiredAndMustHaveContentToWrite) + " garante que campo 'KeyData' tenha conteúdo")]
@@ -83,6 +90,9 @@ namespace E5R.Zero.UnitTest.Rules
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccess);
+            Assert.NotEmpty(result.Unconformities);
+            Assert.Equal(rule.Code,result.Unconformities.First().Key);
+            Assert.Equal(rule.Description,result.Unconformities.First().Value);
         }
 
         [Fact(DisplayName = nameof(KeyDataIsRequiredAndMustHaveContentToWrite) + " garante que campo 'KeyData' permita leitura")]
@@ -99,6 +109,9 @@ namespace E5R.Zero.UnitTest.Rules
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccess);
+            Assert.NotEmpty(result.Unconformities);
+            Assert.Equal(rule.Code,result.Unconformities.First().Key);
+            Assert.Equal(rule.Description,result.Unconformities.First().Value);
         }
 
         [Fact(DisplayName = nameof(FingerprintIsUniqueToWrite) + " requer um armazém")]
@@ -133,6 +146,9 @@ namespace E5R.Zero.UnitTest.Rules
 
             Assert.NotNull(result);
             Assert.False(result.IsSuccess);
+            Assert.NotEmpty(result.Unconformities);
+            Assert.Equal(rule.Code,result.Unconformities.First().Key);
+            Assert.Equal(rule.Description,result.Unconformities.First().Value);
 
             storageMock.Verify(v => v.Find(new object[] {"already-exists"}, null), Times.Exactly(1));
         }

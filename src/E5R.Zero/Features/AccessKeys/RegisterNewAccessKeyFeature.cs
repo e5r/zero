@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using E5R.Architecture.Business;
 using E5R.Architecture.Core;
+using E5R.Architecture.Data.Abstractions;
 using E5R.Zero.Domain.Entities;
 
 using static E5R.Zero.Rules.AccessKeyRuleGroup.WriteCategory;
@@ -17,20 +18,23 @@ namespace E5R.Zero.Features.AccessKeys
     /// </summary>
     public class RegisterNewAccessKeyFeature : BusinessFeature<AccessKeyEntity, AccessKeyEntity>
     {
-        private RuleSet<AccessKeyEntity> Rules { get; }
+        private IRuleSet<AccessKeyEntity> Rules { get; }
+        private ILazy<IStorage<AccessKeyEntity>> Storage { get; }
 
-        public RegisterNewAccessKeyFeature(RuleSet<AccessKeyEntity> rules)
+        public RegisterNewAccessKeyFeature(IRuleSet<AccessKeyEntity> rules, ILazy<IStorage<AccessKeyEntity>> storage)
         {
             Checker.NotNullArgument(rules, nameof(rules));
+            Checker.NotNullArgument(storage, nameof(storage));
 
             Rules = rules;
+            Storage = storage;
         }
 
         protected override async Task<AccessKeyEntity> ExecActionAsync(AccessKeyEntity input)
         {
             await Rules.ByCategory(WriteCategoryKey).EnsureAsync(input);
 
-            throw new System.NotImplementedException();
+            return Storage.Value.Create(input);
         }
     }
 }
